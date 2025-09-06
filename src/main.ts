@@ -17,6 +17,7 @@ const controls = {
   "Color Picker": [255, 0, 0],
   Frequency: 5,
   Amplitude: 1,
+  "Enable Time": false,
 };
 
 let icosphere: Icosphere;
@@ -49,6 +50,7 @@ function main() {
   gui.addColor(controls, "Color Picker");
   gui.add(controls, "Frequency");
   gui.add(controls, "Amplitude");
+  gui.add(controls, "Enable Time");
 
   // get canvas and webgl context
   const canvas = <HTMLCanvasElement>document.getElementById("canvas");
@@ -76,6 +78,7 @@ function main() {
 
   // This function will be called every frame
   function tick() {
+    const time = controls["Enable Time"] ? performance.now() / 1000 : 0;
     camera.update();
     stats.begin();
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
@@ -103,7 +106,8 @@ function main() {
       ],
       vec4.fromValues(color[0], color[1], color[2], 1),
       controls["Frequency"],
-      controls["Amplitude"]
+      controls["Amplitude"],
+      time
     );
     stats.end();
 

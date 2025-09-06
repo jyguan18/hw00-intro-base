@@ -31,6 +31,7 @@ class ShaderProgram {
   unifColor: WebGLUniformLocation;
   unifFreq: WebGLUniformLocation;
   unifAmp: WebGLUniformLocation;
+  unifTime: WebGLUniformLocation;
 
   constructor(shaders: Array<Shader>) {
     this.prog = gl.createProgram();
@@ -52,6 +53,7 @@ class ShaderProgram {
     this.unifColor = gl.getUniformLocation(this.prog, "u_Color");
     this.unifFreq = gl.getUniformLocation(this.prog, "u_Frequency");
     this.unifAmp = gl.getUniformLocation(this.prog, "u_Amplitude");
+    this.unifTime = gl.getUniformLocation(this.prog, "u_Time");
   }
 
   use() {
@@ -100,6 +102,13 @@ class ShaderProgram {
     this.use();
     if (this.unifColor !== -1) {
       gl.uniform1f(this.unifAmp, amp);
+    }
+  }
+
+  updateTime(time: number) {
+    this.use();
+    if (this.unifColor !== -1) {
+      gl.uniform1f(this.unifTime, time);
     }
   }
 

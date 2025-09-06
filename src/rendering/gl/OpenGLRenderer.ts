@@ -27,7 +27,8 @@ class OpenGLRenderer {
     drawables: Array<Drawable>,
     colorPicker: vec4,
     freq: number,
-    amp: number
+    amp: number,
+    time: number
   ) {
     let model = mat4.create();
     let viewProj = mat4.create();
@@ -40,6 +41,7 @@ class OpenGLRenderer {
     prog.setGeometryColor(color);
     prog.setNoiseFrequency(freq);
     prog.setNoiseAmplitude(amp);
+    prog.updateTime(time);
 
     for (let drawable of drawables) {
       prog.draw(drawable);

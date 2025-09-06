@@ -14,6 +14,7 @@ precision highp float;
 uniform vec4 u_Color; // The color with which to render this instance of geometry.
 uniform float u_Frequency;
 uniform float u_Amplitude;
+uniform float u_Time;
 
 // These are the interpolated values out of the rasterizer, so you can't know
 // their specific values without knowing the vertices that contributed to them
@@ -71,14 +72,43 @@ float perlinNoise3D(vec3 p) {
     return surfletSum;
 }
 
+float fbm(vec3 p) {
+    float value = 0.0;
+    float amplitude = 10.0;
+    float frequency = 4.0;
+    for(int i = 0; i < 6; i++) {
+        value += amplitude * perlinNoise3D(p * frequency);
+        frequency *= 2.0;
+        amplitude *= 0.7;
+    }
+    return value;
+}
+
 void main()
 {
     // Material base color (before shading)
         
         vec4 diffuseColor = u_Color;
-        float absNoise = abs(perlinNoise3D(fs_Pos.xyz * u_Frequency));
+        vec3 linePos = fs_Pos.xyz * u_Frequency + vec3(u_Time * 0.1, u_Time * 0.07, u_Time * 0.05);
+        float absNoise = abs(perlinNoise3D(linePos));
         float perlin = pow(1.0 - absNoise, 3.0) * u_Amplitude;
-        diffuseColor.rgb *= perlin;
+        
+        float lineThreshold = 0.6;
+        float lineMask = smoothstep(lineThreshold, 1.0, perlin);
+        float bgMask   = 1.0 - lineMask;
+
+        vec3 neonColor = diffuseColor.rgb;
+
+        vec3 fogPos = fs_Pos.xyz * 2.0 + vec3(sin(u_Time * 0.1 + fs_Pos.y * 0.5),
+                cos(u_Time * 0.07 + fs_Pos.x * 0.3),
+                u_Time * 0.05); 
+        float fogNoise = fbm(fogPos);
+        fogNoise = clamp(fogNoise, 0.0, 1.0);
+        vec3 invColor = 1.0 - diffuseColor.rgb;
+        vec3 fogBase = vec3(0.5, 0.5, 0.5);
+        vec3 fogColor = mix(invColor, fogBase, pow(fogNoise, 1.5));
+
+        diffuseColor = vec4(neonColor * lineMask + fogColor * bgMask, 1.0);
 
         // Calculate the diffuse term for Lambert shading
         float diffuseTerm = dot(normalize(fs_Nor), normalize(fs_LightVec));
