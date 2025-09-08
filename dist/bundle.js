@@ -10379,6 +10379,7 @@ class Cube extends _rendering_gl_Drawable__WEBPACK_IMPORTED_MODULE_0__["default"
             0,
             2,
             3,
+            // front
             4,
             7,
             6,
