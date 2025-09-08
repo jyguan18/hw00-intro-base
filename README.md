@@ -1,4 +1,18 @@
-# HW 0: Intro to Javascript and WebGL
+HW 0: Intro to Javascript and WebGL
+==============
+![](images/cube.gif)
+
+[Link to Demo](https://jyguan18.github.io/hw00-intro-base)
+
+In this homework, I first made a Cube class that inherits from Drawable. For lighting purposes (to see all the sides), all of the normals are positive 1.
+
+Using dat.gui, I created a handful of additional controls like a color picker, frequency + amplitude of the perline noise, and enabling time (for the cube to move and distort with time).
+
+For my noise function, I used a combination of 1 - abs(perlin) and layered fbm on the background. I separated out the primary line color and the complementary background color using a smoothstep and applied the fbm to the background.
+
+To deform the cube, I changed the vertex positions with respect to time using a sin function.
+
+# 
 
 <p align="center">
   <img width="360" height="360" src="https://user-images.githubusercontent.com/1758825/132532354-e3a45402-e484-499e-bfa7-2d73b9f2c946.png">
