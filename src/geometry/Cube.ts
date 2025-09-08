@@ -61,31 +61,37 @@ class Cube extends Drawable {
       2,
       0,
       2,
-      3, // front
+      3,
+      // front
+
       4,
       7,
       6,
       4,
       6,
       5, // back
+
       8,
       9,
       10,
       8,
       10,
       11, // top
+
       12,
       15,
       14,
       12,
       14,
       13, // bottom
+
       16,
       17,
       18,
       16,
       18,
       19, // right
+
       20,
       23,
       22,
